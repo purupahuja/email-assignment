@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!-- I created a single-page application with all the three pages as specified in the instructions as it would allow the functionality run smoothly, efficiently, and quickly-->
+<html>
+<head>
+	<title>Inbox</title>
+	<!-- favicon -->
+	<link rel="icon" href="icon.png" type="image/png">
+	<!-- import metadata -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Import Bootstrap, jQuery, and supporting plugins -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity=sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<style type="text/css">
+		body{
+			margin-bottom: 30px;
+		}
+		.hlink{
+			display: block;
+			background-color: #22b;
+			padding: 12.5px 15px 14px 15px;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			color: white;
+			font-weight: 400;
+			border-radius: 0;
+		}
+		.create-link{
+			background-color: #090;
+		}
+		.hlink:hover{
+			text-decoration: none;
+			color: black;
+			background-color: lightgrey;
+		}
+		.email-content{
+			background-color: #eee;
+			padding: 10px 10px 10px 10px;
+		}
+		#main-header{
+			padding-top: 16.5px;
+			padding-bottom: 1px;
+		}
+		.email{
+			background-color: #efefef;
+			padding: 10px 10px 10px 10px;
+			border: 1px solid black;
+		}
+		.email:hover{
+			background-color: #ddd;
+			cursor: pointer;
+		}
+		.checkmark{
+			margin-top: 5%;
+			width: 18px;
+			height: 18px;
+			background-color: white;
+			border: 1px solid darkgrey;
+		}
+		.checkmark:hover{
+			cursor: pointer;
+			background-color: #ddd;
+		}
+		#email-view, #create-view{
+			display: none;
+		}
+		#email-view{
+			padding-right: 0;
+			padding-left: 0;
+		}
+		#underlining{
+			border: 0.8px solid darkgrey;
+		}
+		.title{
+			font-weight: lighter;
+		}
+		.actual-email{
+			font-size: 1.2em;
+		}
+		#write-area{
+			width: 100%;
+			height: 300px;
+			padding: 8px 8px 8px 8px;
+		}
+		#emailform{
+			width: 100%;
+			background-color: #dfdfdf;
+			padding:10px 10px 10px 10px;
+			height: 100%;
+		}
+		.send-fields{
+			width: 100%;
+			padding: 4px 4px 4px 4px;
+		}
+		.entry-fields{
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+		.submit-btn{
+			border-radius: 0px;
+			background-color: #0b0;
+			text-align: right;
+			float: right;
+		}
+		.mail-index{
+			display: none;
+		}
+		.alert{
+			border-radius: 0;
+			width: 100%;
+		}
+		.main-title{
+			padding-left: 0;
+			padding-right: 0;
+		}
+		.alerting{
+			padding-right: 0;
+			padding-left: 0;
+			display: none;
+		}
+		.btn-row{
+			margin-right: 0;
+			margin-left: 0;
+		}
+		@media only screen and (max-width: 768px){
+			.preview, .checkmark{
+				display: none;
+			}
+			.sender{
+				font-weight: bold;
+			}
+		}
+	</style>
+</head>
+<body>
+	<!-- list view -->
+	<div class="container" id="list-view">
+		<!-- alert message after sending message -->
+		<div class="row alerting"><div class="alert alert-success">Your message has been sent.</div></div>
+		<!-- header/title and create button -->
+		<div class="row">
+			<div class="col-md-10 main-title"><h1 id="main-header">Inbox</h1></div>
+			<div class="col-md-2 main-title"><div id="create-button"><h2><button type="button" class="btn btn-primary btn-lg hlink create-link">CREATE</button></h2></div></div>
+		</div>
+		<div id="maillist-container">
+			<!-- to be filled by JS -->
+			<div class="row email"></div>
+		</div>
+	</div>
+	<!-- email view -->
+	<div class="container" id="email-view">
+		<div class="row btn-row">
+			<div class="col-md-2 main-title"><div id="back-button"><h2><button class="btn-lg btn-primary btn hlink back-link">BACK</button></h2></div></div>
+			<div class="col-md-8"></div>
+			<div class="col-md-2 main-title"><div id="create-button"><h2><button class="btn-lg btn-primary btn create-link hlink">CREATE</button></h2></div></div>
+		</div>
+		<!-- fields to be filled by JS code -->
+		<div class="email-content">
+			<h4 class="email-title-label"><span>From: </span><span class="title" id="sender"></span></h4>
+			<h4 class="email-title-label"><span>Subject: </span><span class="title" id="sub-hodler"></span></h4>
+			<h5 class="email-title-label"><span>Date: </span><span class="title" id="time-hodler"></span></h5>
+			<hr id="underlining" />
+			<p class="actual-email" id="mail-text"></p>
+		</div>
+		<br>
+	</div>
+	<!-- create view -->
+	<div class="container" id="create-view">
+		<div class="row">
+			<div class="col-md-10 main-title"><h1 id="main-header">Create</h1></div>
+			<div class="col-md-2 main-title"><div id="create-button"><h2><button class="btn-lg btn-primary btn hlink back-link">BACK</button></h2></div></div>
+			<form method="post" id="emailform">
+				<div class="row entry-fields">
+					<div class="col-md-1">
+						<label>To Email:</label>
+					</div>
+					<div class="col-md-11">
+						<input class="send-fields" type="email" name="email">
+					</div>
+				</div>
+				<div class="row entry-fields">
+					<div class="col-md-1">
+						<label>Subject:</label>
+					</div>
+					<div class="col-md-11">
+						<input class="send-fields" type="text" name="subject">
+					</div>
+				</div>
+				<textarea id="write-area" placeholder="Your Message Here"></textarea>
+				<button type="button" class="btn submit-btn btn-primary btn-lg">Send</button>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		//enable functionality of back button
+		$(".back-link").click(function(){
+			$('#list-view').css("display", "block");
+			$('#email-view').css("display", "none");
+			$('#create-view').css("display", "none");
+		});
+		//enable functionality of create button
+		$(".create-link").click(function(){
+			$('#list-view').css("display", "none");
+			$('#email-view').css("display", "none");
+			$('#create-view').css("display", "block");
+		});
+		// enable functionality of submit button
+		$(".submit-btn").click(function(){
+			$('#list-view').css("display", "block");
+			$('#email-view').css("display", "none");
+			$('#create-view').css("display", "none");
+			$('.alerting').css("display", "block");
+			// fade out the success alert
+			setInterval(function(){$('.alerting').fadeOut(function(){})},1800);
+		});
+		// access and JSON parse API
+		$.getJSON('http://5c5a21f9af3ff700140de477.mockapi.io/api/email', function(data) {
+  			// fill up list view
+  			var dataLength = data.length;
+  			var eList = "";
+  			for (var i = 0; i < dataLength; i++) {
+        		var eachEmail = '<div class="row email"><p class="mail-index">' + i + '</p>'+
+								'<div class="col-md-1"><div class="checkmark"></div></div>' +
+								'<div class="col-md-3"><span class="sender">' + data[i]["from"] + '</span></div>' +
+								'<div class="col-md-3"><span class="subject">' + data[i]["subject"]+'</span></div>' +
+								'<div class="col-md-5"><span class="preview">' + data[i]["text"].slice(0,50) + '...' + '<span></div>' +
+							'</div>';
+        		eList = eList + eachEmail;
+    		}
+    		$("#maillist-container").html(eList);
+    		// show specific email
+    		$(".email").click(function() {
+				var x = $(this).find('.mail-index').html();
+				$('#list-view').css("display", "none");
+				$('#email-view').css("display", "block");
+				$("#sender").html(data[x]["from"]);
+				$("#sub-hodler").html(data[x]["subject"]);
+				// format time for display
+				$("#time-hodler").html(data[x]["received"].slice(0,10) + " at " + data[x]["received"].slice(11,16));
+				$("#mail-text").html(data[x]["text"]);
+			});
+		});
+	</script>
+</body>
+</html>
